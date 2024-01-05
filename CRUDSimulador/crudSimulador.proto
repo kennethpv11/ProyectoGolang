@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "proto/";
+
+message ElectricityRequest {
+    int32 valueMin = 1;
+    int32 valueMax = 2;
+    string measure = 3;
+    string id = 4;
+  }
+
+message ElectricityResponse {
+    string message = 1;
+}
+
+service ElectricityService{
+    rpc CreateElecticity(ElectricityRequest)returns(ElectricityResponse){}
+}
