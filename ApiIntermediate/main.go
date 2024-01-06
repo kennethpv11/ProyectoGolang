@@ -33,6 +33,8 @@ func main() {
 		if errGrpc != nil {
 			panic(errGrpc)
 		}
-		logger.Print(messageServer)
+		if err := c.WriteMessage(websocket.TextMessage, []byte(*messageServer)); err != nil {
+			panic(err)
+		}
 	}
 }

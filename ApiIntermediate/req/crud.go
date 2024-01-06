@@ -10,7 +10,7 @@ import (
 )
 
 func CreateElectricityRpc(message models.ElectronicDevice) (*string, error) {
-	conn, err := grpc.Dial("dns:localhost:8081", grpc.WithInsecure())
+	conn, err := grpc.Dial("dns:localhost:50051", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
@@ -23,8 +23,10 @@ func CreateElectricityRpc(message models.ElectronicDevice) (*string, error) {
 	}
 	stub := proto.NewElectricityServiceClient(conn)
 	response, err := stub.CreateElecticity(context.Background(), &request)
+	value := response.Message
+	log.Print("the value is", value)
 	if err != nil {
 		return nil, err
 	}
-	return &response.Message, nil
+	return &value, nil
 }

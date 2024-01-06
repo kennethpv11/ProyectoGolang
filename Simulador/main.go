@@ -18,14 +18,14 @@ var upgrader = websocket.Upgrader{
 }
 
 func producerData(w http.ResponseWriter, r *http.Request) {
-
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		return
 	}
 	defer conn.Close()
+
 	for {
-		values, err := utils.GenerateDataElectricity()
+		values, _ := utils.GenerateDataElectricity()
 
 		if err != nil {
 			if err := conn.WriteMessage(websocket.TextMessage, []byte(err.Error())); err != nil {
@@ -42,7 +42,13 @@ func producerData(w http.ResponseWriter, r *http.Request) {
 		if err := conn.WriteMessage(websocket.TextMessage, values); err != nil {
 			panic(err)
 		}
-		time.Sleep(time.Second)
+		_, message, _ := conn.ReadMessage()
+		for len(message) == 0 {
+			time.Sleep(time.Second)
+			log.Print("no hay mensajes")
+			_, message, _ = conn.ReadMessage()
+		}
+
 	}
 
 }
