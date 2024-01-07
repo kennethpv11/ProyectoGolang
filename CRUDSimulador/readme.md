@@ -33,3 +33,18 @@ go get google.golang.org/grpc
 
 El descriptor proto te puede decir mas opciones de configuración
 (https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto)
+
+
+# Analisis estatico
+ 
+ - se debe instalar la herramienta para ejecutar los linters go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.55.2
+
+ - Posteriormente se debe crear el archivo .golangci.yml para las configuraciones (sino usa la por defecto)
+
+ - golangci-lint run. Con este comando se realiza el analisis estatico para validar los errores
+
+ - https://go.dev/wiki/CodeReviewComments este es un enlace a como deben ser los comentarios
+
+ - go install mvdan.cc/gofumpt@latest (gofumt es un erro tipico de indexado debido a que esta mal organizado el codigo) por ello se instala la herramienta y se ejecuta el comando
+
+ Se usa el comango gofumpt -d <path + filename>.go

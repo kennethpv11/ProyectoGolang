@@ -1,10 +1,10 @@
+// main serve the grpc server and execute the migrations
 package main
 
 import (
 	"CRUDSimulador/bd"
 	"CRUDSimulador/proto"
 	"CRUDSimulador/service"
-	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -13,13 +13,11 @@ import (
 	"google.golang.org/grpc"
 )
 
-var (
-	port = flag.Int("port", 50051, "The server port")
-)
+var port = flag.Int("port", 50051, "The server port")
 
 func main() {
 	con := bd.ConectToBd()
-	bd.Migrations(context.Background(), *con)
+	bd.Migrations(*con)
 	defer bd.CloseToBd(con)
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {

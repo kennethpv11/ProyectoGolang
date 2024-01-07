@@ -1,9 +1,10 @@
+// Package bd contains all instructions that call the database
 package bd
 
 import (
-	"context"
 	"database/sql"
 	"embed"
+	"log"
 
 	"github.com/pressly/goose/v3"
 	"github.com/uptrace/bun"
@@ -14,6 +15,7 @@ import (
 //go:embed migrations/*.sql
 var embedMigrations embed.FS
 
+// ConectToBd Create the connection with the database
 func ConectToBd() *bun.DB {
 	configcon := pgdriver.NewConnector(
 		pgdriver.WithAddr("localhost:5432"),
@@ -27,12 +29,15 @@ func ConectToBd() *bun.DB {
 	return db
 }
 
+// CloseToBd Close the connection with the database
 func CloseToBd(db *bun.DB) {
-	db.Close()
+	if err := db.Close(); err != nil {
+		log.Print(err)
+	}
 }
 
-func Migrations(ctx context.Context, db bun.DB) {
-
+// Migrations method that create the migration in the database
+func Migrations(db bun.DB) {
 	goose.SetBaseFS(embedMigrations)
 
 	if err := goose.SetDialect("postgres"); err != nil {
